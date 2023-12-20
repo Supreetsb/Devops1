@@ -1,9 +1,9 @@
 pipeline {
-    agent any
+    agent docker
 
     environment {
         // Define the Docker Hub credentials
-        DOCKER_HUB_USERNAME = credentials('tejasudarshan58')
+        DOCKER_HUB_USERNAME = credentials('tejasudarhan58')
         DOCKER_HUB_PASSWORD = credentials('ganesh040601')
         // Define the Docker image name and tag
         DOCKER_IMAGE_NAME = 'my-app-1.0-SNAPSHOT'
