@@ -1,18 +1,42 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:dind'
-            args '-u root'
-        }
+    agent any
+
+    environment {
+        // Define the Docker Hub credentials
+        DOCKER_HUB_USERNAME = credentials('tejasudarshan58')
+        DOCKER_HUB_PASSWORD = credentials('ganesh040601')
+        // Define the Docker image name and tag
+        DOCKER_IMAGE_NAME = 'my-app-1.0-SNAPSHOT'
     }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                sh 'docker build -t tejasudarshan58/my-app-1.0-SNAPSHOT .'
-                sh 'docker run -t -d --entrypoint='' -u 115:122 -u root -w /var/lib/jenkins/workspace/example -v /var/lib/jenkins/workspace/example:/var/lib/jenkins/workspace/example:rw,z -v /var/lib/jenkins/workspace/example@tmp:/var/lib/jenkins/workspace/example@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** docker:dind cat' 
+                // Checkout the source code from your version control system (e.g., Git)
+                checkout scm
             }
         }
-        // Add more stages as needed
+
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image
+                    docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+
+                    // Log in to Docker Hub
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        // Push the Docker image to Docker Hub
+                        docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                    }
+                }
+            }
+        }
     }
-    // Add post-build actions as needed
+
+    post {
+        success {
+            echo "Docker image built and pushed successfully!"
+        }
+    }
 }
+
