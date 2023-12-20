@@ -1,5 +1,6 @@
 pipeline {
-    agent docker
+    agent{
+        docker{
 
     environment {
         // Define the Docker Hub credentials
@@ -8,6 +9,7 @@ pipeline {
         // Define the Docker image name and tag
         DOCKER_IMAGE_NAME = 'my-app-1.0-SNAPSHOT'
     }
+        }
 
     stages {
         stage('Checkout') {
