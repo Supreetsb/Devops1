@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Push Docker image to the registry
-                    docker.withRegistry('https://index.docker.io/v1/', 'your-docker-hub-credentials-id') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'tejasudarshan58') {
                         docker.image("tejasudarshan58/my-app-1.0-snapshot").push()
                     }
                 }
