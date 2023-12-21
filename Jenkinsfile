@@ -1,44 +1,20 @@
 pipeline {
-    agent{
-        docker{
-
-    environment {
-        // Define the Docker Hub credentials
-        DOCKER_HUB_USERNAME = credentials('tejasudarhan58')
-        DOCKER_HUB_PASSWORD = credentials('ganesh040601')
-        // Define the Docker image name and tag
-        DOCKER_IMAGE_NAME = 'my-app-1.0-SNAPSHOT'
-    }
+    agent {
+        docker {
+            image 'my-app-1.0-SNAPSHOT'
+            args '-u root'
         }
-
+    }
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                // Checkout the source code from your version control system (e.g., Git)
-                checkout scm
+                sh 'docker build -t my-app-1.0-SNAPSHOT .'
+                sh 'docker login'
+                sh 'docker push tejasudarshan58/my-app-1.0-SNAPSHOT'
+'
             }
         }
-
-        stage('Build and Push Docker Image') {
-            steps {
-                script {
-                    // Build the Docker image
-                    docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
-
-                    // Log in to Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                        // Push the Docker image to Docker Hub
-                        docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
-                    }
-                }
-            }
-        }
+        // Add more stages as needed
     }
-
-    post {
-        success {
-            echo "Docker image built and pushed successfully!"
-        }
-    }
+    // Add post-build actions as needed
 }
-
