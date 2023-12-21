@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'my-app-1.0-SNAPSHOT'
+            image 'my-app-1.0-snapshot'
             args '-u root'
         }
     }
