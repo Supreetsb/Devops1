@@ -4,9 +4,17 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.build('my-app-1.0-snapshot')
-                    docker.withRegistry('https://index.docker.io/v1/', 'tejasudarshan58') {
-                        sh 'docker push tejasudarshan58/my-app-1.0-snapshot'
+                    // Build Docker image with a specific tag
+                    docker.build('tejasudarshan58/my-app-1.0-snapshot', '-t tejasudarshan58/my-app-1.0-snapshot:latest .')
+                }
+            }
+        }
+        stage('Push to Registry') {
+            steps {
+                script {
+                    // Push Docker image to the registry
+                    docker.withRegistry('https://index.docker.io/v1/', 'your-docker-hub-credentials-id') {
+                        docker.image("tejasudarshan58/my-app-1.0-snapshot").push()
                     }
                 }
             }
@@ -15,4 +23,5 @@ pipeline {
     }
     // Add post-build actions as needed
 }
+
 
