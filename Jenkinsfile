@@ -5,7 +5,7 @@ pipeline {
             steps {
                 script {
                     docker.build('my-app-1.0-snapshot')
-                    docker.withRegistry('https://tejasudarshan58', 'docker-credentials-id') {
+                    docker.withRegistry('https://tejasudarshan58', 'tejasudarshan58') {
                         sh 'sudo docker push tejasudarshan58/my-app-1.0-snapshot'
                     }
                 }
