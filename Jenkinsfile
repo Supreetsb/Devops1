@@ -8,8 +8,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker build -t my-app-1.0-snapshot .'
-                sh 'docker push tejasudarshan58/my-app-1.0-snapshot'
+                sh 'sudo docker build -t my-app-1.0-snapshot .'
+                sh 'sudo docker login'
+                sh 'sudo docker push tejasudarshan58/my-app-1.0-snapshot'
             }
         }
         // Add more stages as needed
