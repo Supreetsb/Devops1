@@ -6,7 +6,7 @@ pipeline {
                 script {
                     docker.build('my-app-1.0-snapshot')
                     docker.withRegistry('https://index.docker.io/v1/', 'tejasudarshan58') {
-                        sh 'sudo docker push tejasudarshan58/my-app-1.0-snapshot'
+                        sh 'docker push tejasudarshan58/my-app-1.0-snapshot'
                     }
                 }
             }
